@@ -4,6 +4,7 @@ import type { Video } from '@/types/video'
 import {
   extractYoutubeId,
   getVideosByLevel,
+  getReadAloudVideos,
   addVideo,
   deleteVideo,
 } from './videos'
@@ -125,6 +126,80 @@ describe('addVideo', () => {
       vi.mocked(fs.writeFileSync).mock.calls[0][1] as string
     ) as Video[]
     expect(written.some(v => v.id === newVideo.id)).toBe(true)
+  })
+})
+
+describe('getReadAloudVideos', () => {
+  const readAloudVideos: Video[] = [
+    { id: 'ra-b-1', youtubeId: 'yt1', title: 'Brown Bear Read Aloud', channelName: 'StoryTime', level: 'beginner', genre: 'story', isKidsFriendly: true, arLevel: 1.0, createdAt: '2024-01-01T00:00:00.000Z' },
+    { id: 'ra-b-2', youtubeId: 'yt2', title: 'Pete the Cat READ ALOUD', channelName: 'StoryTime', level: 'beginner', genre: 'story', isKidsFriendly: true, arLevel: 1.3, createdAt: '2024-01-01T00:00:00.000Z' },
+    { id: 'ra-b-3', youtubeId: 'yt3', title: 'Chicka Chicka read aloud', channelName: 'StoryTime', level: 'beginner', genre: 'story', isKidsFriendly: true, arLevel: 1.2, createdAt: '2024-01-01T00:00:00.000Z' },
+    { id: 'ra-i-1', youtubeId: 'yt4', title: 'Charlotte Web Read Aloud', channelName: 'Lit Kids', level: 'intermediate', genre: 'story', isKidsFriendly: true, arLevel: 3.1, createdAt: '2024-01-01T00:00:00.000Z' },
+    { id: 'ra-a-1', youtubeId: 'yt5', title: 'Holes Read Aloud', channelName: 'Lit Kids', level: 'advanced', genre: 'story', isKidsFriendly: false, arLevel: 4.6, createdAt: '2024-01-01T00:00:00.000Z' },
+    { id: 'no-ra-1', youtubeId: 'yt6', title: 'Beginner Song No RA', channelName: 'Ch', level: 'beginner', genre: 'song', isKidsFriendly: false, arLevel: 1.0, createdAt: '2024-01-01T00:00:00.000Z' },
+  ]
+
+  const manyReadAloudBeginners: Video[] = Array.from({ length: 10 }, (_, i) => ({
+    id: `ra-many-${i}`,
+    youtubeId: `ytm${i}`,
+    title: `Book ${i} Read Aloud`,
+    channelName: 'Ch',
+    level: 'beginner' as const,
+    genre: 'story' as const,
+    isKidsFriendly: true,
+    arLevel: 1.0 + i * 0.1,
+    createdAt: '2024-01-01T00:00:00.000Z',
+  }))
+
+  it('returns only Read Aloud videos of the specified beginner level', () => {
+    setupMock(readAloudVideos)
+    const result = getReadAloudVideos('beginner')
+    expect(result.every(v => v.level === 'beginner')).toBe(true)
+    expect(result.every(v => v.title.toLowerCase().includes('read aloud'))).toBe(true)
+    expect(result).toHaveLength(3)
+  })
+
+  it('returns only Read Aloud videos of the specified intermediate level', () => {
+    setupMock(readAloudVideos)
+    const result = getReadAloudVideos('intermediate')
+    expect(result.every(v => v.level === 'intermediate')).toBe(true)
+    expect(result).toHaveLength(1)
+  })
+
+  it('returns only Read Aloud videos of the specified advanced level', () => {
+    setupMock(readAloudVideos)
+    const result = getReadAloudVideos('advanced')
+    expect(result.every(v => v.level === 'advanced')).toBe(true)
+    expect(result).toHaveLength(1)
+  })
+
+  it('filters case-insensitively (READ ALOUD, read aloud, Read Aloud all match)', () => {
+    setupMock(readAloudVideos)
+    const result = getReadAloudVideos('beginner')
+    const titles = result.map(v => v.title)
+    expect(titles).toContain('Brown Bear Read Aloud')
+    expect(titles).toContain('Pete the Cat READ ALOUD')
+    expect(titles).toContain('Chicka Chicka read aloud')
+  })
+
+  it('returns videos sorted by arLevel ascending', () => {
+    setupMock(readAloudVideos)
+    const result = getReadAloudVideos('beginner')
+    expect(result.map(v => v.arLevel)).toEqual([1.0, 1.2, 1.3])
+  })
+
+  it('caps results at 8 when more than 8 Read Aloud videos exist', () => {
+    setupMock(manyReadAloudBeginners)
+    const result = getReadAloudVideos('beginner')
+    expect(result).toHaveLength(8)
+  })
+
+  it('does not include Read Aloud videos from other levels', () => {
+    setupMock(readAloudVideos)
+    const result = getReadAloudVideos('beginner')
+    expect(result.every(v => v.level === 'beginner')).toBe(true)
+    expect(result.some(v => v.id === 'ra-i-1')).toBe(false)
+    expect(result.some(v => v.id === 'ra-a-1')).toBe(false)
   })
 })
 

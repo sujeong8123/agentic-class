@@ -27,6 +27,13 @@ export function getVideosByLevel(level: Video['level']): Video[] {
   return readVideos().filter(v => v.level === level).slice(0, 12)
 }
 
+export function getReadAloudVideos(level: Video['level']): Video[] {
+  return readVideos()
+    .filter(v => v.level === level && v.title.toLowerCase().includes('read aloud'))
+    .sort((a, b) => a.arLevel - b.arLevel)
+    .slice(0, 8)
+}
+
 export function getVideoById(id: string): Video | null {
   return readVideos().find(v => v.id === id) ?? null
 }
