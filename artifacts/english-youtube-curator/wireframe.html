@@ -1,0 +1,733 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframe: YoungYouTube</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  /* ── shadcn preset b2DLnnlyN (radix-sera / taupe / phosphor) ── */
+  :root {
+    --primary:        oklch(0.514 0.222 16.935);   /* red-coral */
+    --primary-fg:     oklch(0.969 0.015 12.422);
+    --border:         oklch(0.922 0.005 34.3);
+    --muted:          oklch(0.96 0.002 17.2);
+    --muted-fg:       oklch(0.547 0.021 43.1);
+    --bg:             oklch(1 0 0);
+    --fg:             oklch(0.147 0.004 49.3);
+    --radius:         0.45rem;
+
+    /* kid-friendly level palette */
+    --lvl-beginner:   #4ade80;   /* green-400  */
+    --lvl-beginner-bg:#f0fdf4;
+    --lvl-inter:      #fb923c;   /* orange-400 */
+    --lvl-inter-bg:   #fff7ed;
+    --lvl-advanced:   #818cf8;   /* indigo-400 */
+    --lvl-advanced-bg:#eef2ff;
+
+    /* genre chip palette */
+    --genre-story:    #f472b6;   /* pink-400   */
+    --genre-song:     #facc15;   /* yellow-400 */
+    --genre-science:  #34d399;   /* emerald-400*/
+    --genre-etc:      #60a5fa;   /* blue-400   */
+  }
+
+  * {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    box-sizing: border-box;
+  }
+
+  body { background: #f3f4f6; margin: 0; padding: 0; color: var(--fg); }
+
+  /* ── Wireframe dev nav ── */
+  #wf-nav {
+    position: sticky; top: 0; z-index: 100;
+    background: #1e1e1e; color: #ccc;
+    border-bottom: 1px solid #333;
+    display: flex; align-items: center; gap: 4px;
+    padding: 4px 12px; overflow-x: auto;
+  }
+  #wf-nav .wf-label { font-size: 11px; color: #666; margin-right: 4px; white-space: nowrap; }
+  #wf-nav button { cursor: pointer; font-size: 12px; padding: 3px 8px; background: transparent; border: none; border-bottom: 2px solid transparent; white-space: nowrap; color: #aaa; border-radius: 3px; }
+  #wf-nav button:hover { background: #333; color: #fff; }
+  #wf-nav button.active { font-weight: bold; border-bottom-color: var(--primary); color: #fff; }
+  .vp-toggle { display: flex; margin-left: auto; gap: 0; }
+  .vp-toggle button { font-size: 11px; padding: 3px 10px; border: 1px solid #444 !important; background: #2a2a2a !important; color: #aaa !important; border-bottom: 1px solid #444 !important; }
+  .vp-toggle button:first-child { border-radius: 4px 0 0 4px; }
+  .vp-toggle button:last-child { border-radius: 0 4px 4px 0; border-left: none !important; }
+  .vp-toggle button.active { background: var(--primary) !important; color: white !important; border-color: var(--primary) !important; }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  body.viewport-mobile .app-shell {
+    max-width: 390px !important;
+    margin: 20px auto !important;
+    border: 3px solid #333;
+    border-radius: 40px;
+    overflow: hidden;
+    box-shadow: 0 8px 40px rgba(0,0,0,0.18);
+    background: var(--bg);
+  }
+
+  body.viewport-desktop .app-shell {
+    max-width: 1100px;
+    margin: 20px auto;
+    background: var(--bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 2px 16px rgba(0,0,0,0.08);
+  }
+
+  /* ── App header ── */
+  .yt-header {
+    position: sticky; top: 0; z-index: 50;
+    background: white;
+    border-bottom: 1px solid var(--border);
+    padding: 10px 16px;
+    display: flex; align-items: center; gap: 10px;
+  }
+
+  .yt-logo {
+    display: flex; align-items: center; gap: 5px;
+    font-size: 15px; font-weight: bold; letter-spacing: -0.3px; color: var(--fg);
+    text-decoration: none;
+  }
+  .yt-logo-box {
+    width: 30px; height: 21px;
+    background: var(--primary);
+    border-radius: 5px;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+  .yt-logo-box svg { color: white !important; width: 13px; height: 13px; }
+  .yt-logo-text { color: var(--fg) !important; }
+  .yt-logo-text span { color: var(--primary) !important; }
+
+  /* ── Genre chips ── */
+  .chip-row {
+    display: flex; gap: 8px; overflow-x: auto; padding: 10px 14px;
+    border-bottom: 1px solid var(--border);
+    scrollbar-width: none; background: white;
+    position: sticky; top: 53px; z-index: 40;
+  }
+  .chip-row::-webkit-scrollbar { display: none; }
+  .chip {
+    flex-shrink: 0; padding: 5px 14px; border-radius: 20px;
+    font-size: 12px; cursor: pointer; white-space: nowrap; font-weight: 500;
+    border: 2px solid transparent;
+    background: #f3f4f6; color: #555;
+  }
+  .chip.all.active   { background: var(--fg); color: white; }
+  .chip.story        { background: #fdf2f8; color: #be185d; border-color: #fbcfe8; }
+  .chip.story.active { background: var(--genre-story); color: white; border-color: var(--genre-story); }
+  .chip.song         { background: #fefce8; color: #92400e; border-color: #fde68a; }
+  .chip.song.active  { background: var(--genre-song); color: #1a1a1a; border-color: var(--genre-song); }
+  .chip.science      { background: #ecfdf5; color: #065f46; border-color: #a7f3d0; }
+  .chip.science.active { background: var(--genre-science); color: white; border-color: var(--genre-science); }
+  .chip.etc          { background: #eff6ff; color: #1e40af; border-color: #bfdbfe; }
+  .chip.etc.active   { background: var(--genre-etc); color: white; border-color: var(--genre-etc); }
+
+  /* ── Video grid ── */
+  .yt-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    padding: 12px 8px;
+    gap: 4px;
+    background: white;
+  }
+  body.viewport-desktop .yt-grid {
+    grid-template-columns: repeat(4, 1fr);
+    padding: 16px;
+    gap: 12px;
+  }
+
+  .yt-card { padding: 4px; cursor: pointer; border-radius: 8px; }
+  .yt-card:hover { background: #f9fafb; }
+
+  .yt-thumb {
+    width: 100%; aspect-ratio: 16/9;
+    background: #e5e7eb;
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+  }
+  .yt-thumb-play {
+    width: 36px; height: 36px;
+    background: rgba(0,0,0,0.4);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+  }
+  .yt-thumb-play svg { color: white !important; width: 18px; height: 18px; }
+
+  .badge-kids {
+    position: absolute; top: 5px; left: 5px;
+    background: #dcfce7; color: #15803d;
+    border-radius: 4px; padding: 2px 6px;
+    font-size: 10px; font-weight: bold;
+    display: flex; align-items: center; gap: 3px; border: 1px solid #86efac;
+  }
+  .badge-kids svg { color: #15803d !important; }
+  .yt-duration {
+    position: absolute; bottom: 5px; right: 5px;
+    background: rgba(0,0,0,0.75); color: white !important;
+    border-radius: 3px; padding: 1px 5px; font-size: 10px;
+  }
+
+  .yt-card-info { padding: 6px 4px 4px; }
+  .yt-card-title {
+    font-size: 12px; font-weight: 600; line-height: 1.4; margin-bottom: 2px; color: var(--fg);
+    display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+  }
+  .yt-card-channel { font-size: 11px; color: var(--muted-fg); margin-bottom: 3px; }
+  .ar-pill {
+    display: inline-block; font-size: 10px; padding: 2px 7px;
+    border-radius: 4px; font-weight: 600;
+  }
+  .ar-story   { background: #fdf2f8; color: #be185d; }
+  .ar-song    { background: #fefce8; color: #92400e; }
+  .ar-science { background: #ecfdf5; color: #065f46; }
+
+  /* ── Player ── */
+  .player-wrap {
+    width: 100%; aspect-ratio: 16/9;
+    background: #111;
+    display: flex; align-items: center; justify-content: center;
+    flex-direction: column; gap: 10px;
+  }
+  .player-wrap svg { color: #444 !important; }
+  .player-wrap p  { color: #666 !important; font-size: 12px; margin: 0; }
+
+  /* ── Level cards ── */
+  .level-card {
+    border: 2px solid transparent;
+    border-radius: 14px; padding: 16px 14px;
+    background: white; cursor: pointer;
+    display: flex; align-items: center; gap: 14px;
+    transition: transform 0.1s;
+  }
+  .level-card:hover { transform: scale(1.01); }
+  .level-card.beginner  { border-color: var(--lvl-beginner);  background: var(--lvl-beginner-bg); }
+  .level-card.inter     { border-color: var(--lvl-inter);     background: var(--lvl-inter-bg); }
+  .level-card.advanced  { border-color: var(--lvl-advanced);  background: var(--lvl-advanced-bg); }
+  .level-icon {
+    width: 48px; height: 48px;
+    border-radius: 12px;
+    display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+    font-size: 22px;
+  }
+  .level-icon.beginner  { background: var(--lvl-beginner); }
+  .level-icon.inter     { background: var(--lvl-inter); }
+  .level-icon.advanced  { background: var(--lvl-advanced); }
+  .level-icon svg { color: white !important; }
+
+  /* ── Admin ── */
+  .adm-header {
+    background: white; border-bottom: 1px solid var(--border);
+    padding: 12px 16px; display: flex; align-items: center; gap: 10px;
+  }
+  .w-input {
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 10px; font-size: 12px; width: 100%; background: white; outline: none;
+  }
+  .w-input.error { border-color: oklch(0.577 0.245 27.325); }
+  .w-select {
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 8px 10px; font-size: 12px; width: 100%; background: white;
+  }
+  .w-label { font-size: 11px; color: var(--muted-fg); display: block; margin-bottom: 4px; }
+  .w-btn {
+    border: 1px solid var(--border); border-radius: 6px;
+    padding: 6px 14px; background: white; cursor: pointer; font-size: 12px; color: var(--fg);
+  }
+  .w-btn:hover { background: var(--muted); }
+  .w-btn-primary {
+    border: none; border-radius: 6px;
+    padding: 6px 16px; background: var(--primary); color: var(--primary-fg) !important;
+    cursor: pointer; font-size: 12px; font-weight: 600;
+  }
+  .adm-row {
+    display: flex; align-items: center; gap: 10px;
+    padding: 10px 16px; border-bottom: 1px solid var(--border); background: white;
+  }
+  .adm-row:hover { background: #fafafa; }
+
+  /* ── Screen Notes ── */
+  .screen-notes {
+    background: #fffde7; border-left: 3px solid #ffd54f;
+    padding: 10px 14px; font-size: 12px;
+  }
+  .screen-notes summary { cursor: pointer; font-weight: bold; font-size: 11px; color: #b0a050; text-transform: uppercase; letter-spacing: 0.05em; }
+  .screen-notes p  { margin: 5px 0 2px; color: #777; }
+  .screen-notes ul { margin: 3px 0 0 14px; padding: 0; color: #777; }
+  .screen-notes li { margin: 2px 0; }
+
+  .divider { height: 1px; background: var(--border); }
+</style>
+</head>
+<body class="viewport-mobile">
+
+<!-- ── Dev nav ── -->
+<div id="wf-nav">
+  <span class="wf-label">wireframe</span>
+  <button id="nav-0" onclick="show(0)">홈 · 레벨</button>
+  <button id="nav-1" onclick="show(1)">영상 목록</button>
+  <button id="nav-2" onclick="show(2)">영상 재생</button>
+  <button id="nav-3" onclick="show(3)">관리자 · 추가</button>
+  <button id="nav-4" onclick="show(4)">관리자 · 목록</button>
+  <div class="vp-toggle">
+    <button id="vp-desktop" onclick="setViewport('desktop')">Desktop</button>
+    <button id="vp-mobile"  onclick="setViewport('mobile')" class="active">Mobile</button>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Screen 0: 홈 — 레벨 선택
+══════════════════════════════════════ -->
+<div id="screen-0" class="screen" data-scenario="scenario-1">
+<div class="app-shell">
+
+  <div class="yt-header">
+    <div class="yt-logo">
+      <div class="yt-logo-box"><i data-lucide="play"></i></div>
+      <span class="yt-logo-text">Young<span>You</span>Tube</span>
+    </div>
+    <div style="margin-left:auto;display:flex;gap:10px;align-items:center;">
+      <i data-lucide="search" style="width:19px;height:19px;color:var(--muted-fg)"></i>
+    </div>
+  </div>
+
+  <div style="padding:24px 16px 20px; background:white;">
+
+    <div style="text-align:center;margin-bottom:20px;">
+      <p style="font-size:22px;margin:0 0 4px;">🎬</p>
+      <p style="font-size:14px;font-weight:bold;margin:0 0 4px;">오늘 어떤 영상 볼까요?</p>
+      <p style="font-size:12px;color:var(--muted-fg);margin:0;">레벨을 선택하면 맞춤 영상을 보여드려요</p>
+    </div>
+
+    <div style="display:flex;flex-direction:column;gap:12px;">
+
+      <div class="level-card beginner" onclick="show(1)">
+        <div class="level-icon beginner">
+          <i data-lucide="star" style="width:22px;height:22px"></i>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:bold;font-size:14px;color:#15803d;margin-bottom:2px;">Beginner ⭐</div>
+          <div style="font-size:11px;color:#4b7a4b;">AR 1.0 – 2.0 · 3~5세</div>
+          <div style="font-size:11px;color:#4b7a4b;">쉬운 단어, 짧은 문장</div>
+        </div>
+        <i data-lucide="chevron-right" style="width:16px;height:16px;color:#4ade80"></i>
+      </div>
+
+      <div class="level-card inter">
+        <div class="level-icon inter">
+          <i data-lucide="zap" style="width:22px;height:22px"></i>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:bold;font-size:14px;color:#c2410c;margin-bottom:2px;">Intermediate 🔥</div>
+          <div style="font-size:11px;color:#9a3412;">AR 2.0 – 3.5 · 5~7세</div>
+          <div style="font-size:11px;color:#9a3412;">문장 구조, 간단한 이야기</div>
+        </div>
+        <i data-lucide="chevron-right" style="width:16px;height:16px;color:#fb923c"></i>
+      </div>
+
+      <div class="level-card advanced">
+        <div class="level-icon advanced">
+          <i data-lucide="rocket" style="width:22px;height:22px"></i>
+        </div>
+        <div style="flex:1;">
+          <div style="font-weight:bold;font-size:14px;color:#3730a3;margin-bottom:2px;">Advanced 🚀</div>
+          <div style="font-size:11px;color:#4338ca;">AR 3.5 – 5.0 · 7~8세</div>
+          <div style="font-size:11px;color:#4338ca;">복잡한 내용, 긴 영상</div>
+        </div>
+        <i data-lucide="chevron-right" style="width:16px;height:16px;color:#818cf8"></i>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="screen-notes">
+    <details open>
+      <summary>Notes</summary>
+      <p>앱 진입점. 레벨 카드 클릭 → 영상 목록 진입.</p>
+      <ul>
+        <li>트리거: 앱 첫 진입 / 영상 목록에서 ← 클릭</li>
+        <li>전환: 레벨 카드 → Screen 1 (영상 목록)</li>
+      </ul>
+    </details>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Screen 1: 영상 목록
+══════════════════════════════════════ -->
+<div id="screen-1" class="screen" data-scenario="scenario-1, scenario-2, scenario-4">
+<div class="app-shell">
+
+  <div class="yt-header">
+    <button onclick="show(0)" style="background:none;border:none;cursor:pointer;padding:0;display:flex;">
+      <i data-lucide="arrow-left" style="width:20px;height:20px;color:var(--fg)"></i>
+    </button>
+    <div class="yt-logo">
+      <div class="yt-logo-box"><i data-lucide="play"></i></div>
+      <span class="yt-logo-text">Young<span>You</span>Tube</span>
+    </div>
+    <i data-lucide="search" style="width:19px;height:19px;color:var(--muted-fg);margin-left:auto;"></i>
+  </div>
+
+  <!-- Level badge row -->
+  <div style="padding:8px 14px 0;background:white;display:flex;align-items:center;gap:8px;">
+    <div style="width:10px;height:10px;border-radius:50%;background:var(--lvl-beginner);flex-shrink:0;"></div>
+    <span style="font-size:12px;font-weight:bold;color:#15803d;">Beginner</span>
+    <span style="font-size:11px;color:var(--muted-fg);">AR 1.0–2.0 · 3~5세</span>
+  </div>
+
+  <!-- Genre chips -->
+  <div class="chip-row">
+    <div class="chip all active">전체</div>
+    <div class="chip story">📖 Story</div>
+    <div class="chip song">🎵 Song</div>
+    <div class="chip science">🔬 Science</div>
+    <div class="chip etc">✨ 기타</div>
+  </div>
+
+  <!-- Video grid -->
+  <div class="yt-grid">
+
+    <div class="yt-card" onclick="show(2)">
+      <div class="yt-thumb" style="background:#fce7f3;">
+        <div class="yt-thumb-play"><i data-lucide="play"></i></div>
+        <div class="badge-kids"><i data-lucide="shield-check" style="width:9px;height:9px"></i>Kids</div>
+        <div class="yt-duration">3:24</div>
+      </div>
+      <div class="yt-card-info">
+        <div class="yt-card-title">Peppa Pig — Going Swimming</div>
+        <div class="yt-card-channel">Peppa Pig Official</div>
+        <span class="ar-pill ar-story">📖 AR 1.2</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <div class="yt-thumb" style="background:#fef9c3;">
+        <div class="yt-thumb-play"><i data-lucide="play"></i></div>
+        <div class="badge-kids"><i data-lucide="shield-check" style="width:9px;height:9px"></i>Kids</div>
+        <div class="yt-duration">2:10</div>
+      </div>
+      <div class="yt-card-info">
+        <div class="yt-card-title">Wheels on the Bus</div>
+        <div class="yt-card-channel">Super Simple Songs</div>
+        <span class="ar-pill ar-song">🎵 AR 1.0</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <div class="yt-thumb" style="background:#d1fae5;">
+        <div class="yt-thumb-play"><i data-lucide="play"></i></div>
+        <div class="yt-duration">4:50</div>
+      </div>
+      <div class="yt-card-info">
+        <div class="yt-card-title">How Do Plants Grow?</div>
+        <div class="yt-card-channel">NatGeo Kids</div>
+        <span class="ar-pill ar-science">🔬 AR 1.8</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <div class="yt-thumb" style="background:#ede9fe;">
+        <div class="yt-thumb-play"><i data-lucide="play"></i></div>
+        <div class="badge-kids"><i data-lucide="shield-check" style="width:9px;height:9px"></i>Kids</div>
+        <div class="yt-duration">5:02</div>
+      </div>
+      <div class="yt-card-info">
+        <div class="yt-card-title">The Very Hungry Caterpillar</div>
+        <div class="yt-card-channel">StoryTime</div>
+        <span class="ar-pill ar-story">📖 AR 1.5</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <div class="yt-thumb" style="background:#fef9c3;">
+        <div class="yt-thumb-play"><i data-lucide="play"></i></div>
+        <div class="badge-kids"><i data-lucide="shield-check" style="width:9px;height:9px"></i>Kids</div>
+        <div class="yt-duration">1:58</div>
+      </div>
+      <div class="yt-card-info">
+        <div class="yt-card-title">ABC Song</div>
+        <div class="yt-card-channel">Super Simple Songs</div>
+        <span class="ar-pill ar-song">🎵 AR 1.1</span>
+      </div>
+    </div>
+
+    <div class="yt-card">
+      <div class="yt-thumb" style="background:#d1fae5;">
+        <div class="yt-thumb-play"><i data-lucide="play"></i></div>
+        <div class="yt-duration">6:14</div>
+      </div>
+      <div class="yt-card-info">
+        <div class="yt-card-title">Colors of the Rainbow</div>
+        <div class="yt-card-channel">Kids Learning Tube</div>
+        <span class="ar-pill ar-science">🔬 AR 1.3</span>
+      </div>
+    </div>
+
+  </div>
+
+  <div class="screen-notes">
+    <details open>
+      <summary>Notes</summary>
+      <p>레벨 선택 후 메인 탐색 화면. YouTube 홈 피드 구조.</p>
+      <ul>
+        <li>트리거: 홈에서 레벨 클릭</li>
+        <li>인터랙션: 장르 chip 클릭 → 해당 장르만 표시 / "전체" → 전체 표시</li>
+        <li>인터랙션: 카드 클릭 → Screen 2 (영상 재생)</li>
+        <li>Kids 배지: Kids-friendly 영상에만 표시. 배지 없는 카드 = 미설정</li>
+        <li>최대 10개 표시</li>
+      </ul>
+    </details>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Screen 2: 영상 재생
+══════════════════════════════════════ -->
+<div id="screen-2" class="screen" data-scenario="scenario-3">
+<div class="app-shell">
+
+  <div class="yt-header">
+    <button onclick="show(1)" style="background:none;border:none;cursor:pointer;padding:0;display:flex;">
+      <i data-lucide="arrow-left" style="width:20px;height:20px;color:var(--fg)"></i>
+    </button>
+    <div class="yt-logo">
+      <div class="yt-logo-box"><i data-lucide="play"></i></div>
+      <span class="yt-logo-text">Young<span>You</span>Tube</span>
+    </div>
+  </div>
+
+  <!-- Full-width dark player -->
+  <div class="player-wrap">
+    <i data-lucide="play-circle" style="width:52px;height:52px"></i>
+    <p>YouTube 임베드 플레이어</p>
+    <p style="font-size:10px;color:#555 !important;">앱 안에서만 재생 — 외부 이탈 없음</p>
+  </div>
+
+  <!-- Info -->
+  <div style="background:white;padding:14px 16px 8px;">
+    <div style="font-size:14px;font-weight:bold;line-height:1.4;margin-bottom:10px;color:var(--fg);">
+      Peppa Pig — Going Swimming
+    </div>
+
+    <div style="display:flex;gap:6px;flex-wrap:wrap;margin-bottom:12px;">
+      <span style="font-size:11px;padding:3px 10px;border-radius:99px;background:var(--lvl-beginner-bg);color:#15803d;border:1px solid var(--lvl-beginner);font-weight:600;">⭐ Beginner</span>
+      <span class="ar-pill ar-story">📖 Story</span>
+      <span class="ar-pill ar-story">AR 1.2</span>
+      <span style="font-size:11px;padding:3px 10px;border-radius:99px;background:#dcfce7;color:#15803d;border:1px solid #86efac;font-weight:600;display:inline-flex;align-items:center;gap:4px;">
+        <i data-lucide="shield-check" style="width:11px;height:11px;color:#15803d !important;"></i>Kids-friendly
+      </span>
+    </div>
+
+    <div class="divider"></div>
+
+    <div style="display:flex;align-items:center;gap:10px;padding:10px 0 4px;">
+      <div style="width:34px;height:34px;background:#fce7f3;border-radius:50%;display:flex;align-items:center;justify-content:center;flex-shrink:0;">
+        <i data-lucide="tv-2" style="width:16px;height:16px;color:#be185d !important;"></i>
+      </div>
+      <div>
+        <div style="font-size:12px;font-weight:bold;color:var(--fg);">Peppa Pig Official</div>
+        <div style="font-size:11px;color:var(--muted-fg);">검증된 교육 채널</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="screen-notes">
+    <details open>
+      <summary>Notes</summary>
+      <p>카드 클릭 후 진입. YouTube 플레이어 레이아웃.</p>
+      <ul>
+        <li>불변 규칙: YouTube 외부 링크 없음. IFrame API로 임베드</li>
+        <li>전환: ← → Screen 1 (이전 필터 상태 유지)</li>
+      </ul>
+    </details>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Screen 3: 관리자 — 영상 추가
+══════════════════════════════════════ -->
+<div id="screen-3" class="screen" data-scenario="scenario-5">
+<div class="app-shell">
+
+  <div class="adm-header">
+    <i data-lucide="settings" style="width:16px;height:16px;color:var(--muted-fg)"></i>
+    <span style="font-size:13px;font-weight:bold;">관리자</span>
+    <button class="w-btn" style="margin-left:auto;font-size:11px;padding:3px 8px;" onclick="show(4)">영상 목록 →</button>
+  </div>
+
+  <div style="background:white;padding:16px;display:flex;flex-direction:column;gap:14px;">
+    <div style="font-size:13px;font-weight:bold;color:var(--fg);">영상 추가</div>
+
+    <div>
+      <label class="w-label">YouTube URL <span style="color:oklch(0.577 0.245 27.325)">*</span></label>
+      <input class="w-input error" type="text" placeholder="https://www.youtube.com/watch?v=..." readonly />
+      <p style="font-size:11px;color:oklch(0.577 0.245 27.325);margin:4px 0 0;">유효하지 않은 YouTube URL입니다</p>
+    </div>
+
+    <div>
+      <label class="w-label">제목 <span style="color:oklch(0.577 0.245 27.325)">*</span></label>
+      <input class="w-input" type="text" placeholder="영상 제목 입력" readonly />
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
+      <div>
+        <label class="w-label">레벨 <span style="color:oklch(0.577 0.245 27.325)">*</span></label>
+        <select class="w-select">
+          <option value="">선택</option>
+          <option>⭐ Beginner</option>
+          <option>🔥 Intermediate</option>
+          <option>🚀 Advanced</option>
+        </select>
+      </div>
+      <div>
+        <label class="w-label">장르 <span style="color:oklch(0.577 0.245 27.325)">*</span></label>
+        <select class="w-select">
+          <option value="">선택</option>
+          <option>📖 Story</option>
+          <option>🎵 Song</option>
+          <option>🔬 Science</option>
+          <option>✨ 기타</option>
+        </select>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:8px;">
+      <input type="checkbox" id="kids2" style="width:15px;height:15px;accent-color:var(--primary)" />
+      <label for="kids2" style="font-size:12px;cursor:pointer;color:var(--fg);">Kids-friendly 배지 표시</label>
+    </div>
+
+    <div style="display:flex;gap:8px;padding-top:2px;">
+      <button class="w-btn-primary">저장</button>
+      <button class="w-btn">취소</button>
+    </div>
+  </div>
+
+  <div class="screen-notes">
+    <details open>
+      <summary>Notes</summary>
+      <p>/admin 직접 접근. 일반 사용자 UI에 링크 없음.</p>
+      <ul>
+        <li>에러 예시: 잘못된 URL → 빨간 테두리 + 메시지</li>
+        <li>전환: 영상 목록 → → Screen 4</li>
+      </ul>
+    </details>
+  </div>
+
+</div>
+</div>
+
+<!-- ══════════════════════════════════════
+     Screen 4: 관리자 — 영상 목록
+══════════════════════════════════════ -->
+<div id="screen-4" class="screen" data-scenario="scenario-6">
+<div class="app-shell">
+
+  <div class="adm-header">
+    <i data-lucide="settings" style="width:16px;height:16px;color:var(--muted-fg)"></i>
+    <span style="font-size:13px;font-weight:bold;">관리자</span>
+    <button class="w-btn-primary" style="margin-left:auto;font-size:11px;padding:4px 12px;" onclick="show(3)">+ 영상 추가</button>
+  </div>
+
+  <div style="padding:10px 16px 6px;background:white;border-bottom:1px solid var(--border);">
+    <span style="font-size:12px;font-weight:bold;color:var(--fg);">영상 목록</span>
+    <span style="font-size:11px;color:var(--muted-fg);margin-left:6px;">총 4개</span>
+  </div>
+
+  <div class="adm-row">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:12px;font-weight:bold;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;color:var(--fg);">Peppa Pig — Going Swimming</div>
+      <div style="font-size:11px;color:var(--muted-fg);display:flex;gap:6px;margin-top:3px;flex-wrap:wrap;">
+        <span style="color:#15803d;font-weight:600;">⭐ Beginner</span>
+        <span>📖 Story</span>
+        <span style="color:#15803d;font-weight:600;display:inline-flex;align-items:center;gap:2px;"><i data-lucide="shield-check" style="width:10px;height:10px;color:#15803d !important;"></i>Kids</span>
+      </div>
+    </div>
+    <button class="w-btn" style="font-size:11px;padding:3px 8px;flex-shrink:0;">수정</button>
+    <button class="w-btn" style="font-size:11px;padding:3px 8px;flex-shrink:0;color:oklch(0.577 0.245 27.325);border-color:oklch(0.577 0.245 27.325);">삭제</button>
+  </div>
+
+  <div class="adm-row">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:12px;font-weight:bold;color:var(--fg);">Wheels on the Bus</div>
+      <div style="font-size:11px;color:var(--muted-fg);display:flex;gap:6px;margin-top:3px;">
+        <span style="color:#15803d;font-weight:600;">⭐ Beginner</span>
+        <span>🎵 Song</span>
+        <span style="color:#15803d;font-weight:600;display:inline-flex;align-items:center;gap:2px;"><i data-lucide="shield-check" style="width:10px;height:10px;color:#15803d !important;"></i>Kids</span>
+      </div>
+    </div>
+    <button class="w-btn" style="font-size:11px;padding:3px 8px;flex-shrink:0;">수정</button>
+    <button class="w-btn" style="font-size:11px;padding:3px 8px;flex-shrink:0;color:oklch(0.577 0.245 27.325);border-color:oklch(0.577 0.245 27.325);">삭제</button>
+  </div>
+
+  <div class="adm-row">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:12px;font-weight:bold;color:var(--fg);">How Do Plants Grow?</div>
+      <div style="font-size:11px;color:var(--muted-fg);display:flex;gap:6px;margin-top:3px;">
+        <span style="color:#15803d;font-weight:600;">⭐ Beginner</span>
+        <span>🔬 Science</span>
+      </div>
+    </div>
+    <button class="w-btn" style="font-size:11px;padding:3px 8px;flex-shrink:0;">수정</button>
+    <button class="w-btn" style="font-size:11px;padding:3px 8px;flex-shrink:0;color:oklch(0.577 0.245 27.325);border-color:oklch(0.577 0.245 27.325);">삭제</button>
+  </div>
+
+  <!-- 삭제 확인 상태 -->
+  <div class="adm-row" style="background:#fff5f5;border-left:3px solid oklch(0.577 0.245 27.325);">
+    <div style="flex:1;min-width:0;">
+      <div style="font-size:12px;font-weight:bold;color:var(--fg);">The Very Hungry Caterpillar</div>
+      <div style="font-size:11px;color:oklch(0.577 0.245 27.325);margin-top:3px;font-weight:600;">삭제하시겠습니까?</div>
+    </div>
+    <button class="w-btn-primary" style="font-size:11px;padding:3px 10px;flex-shrink:0;background:oklch(0.577 0.245 27.325);">확인</button>
+    <button class="w-btn" style="font-size:11px;padding:3px 8px;flex-shrink:0;">취소</button>
+  </div>
+
+  <div class="screen-notes">
+    <details open>
+      <summary>Notes</summary>
+      <p>등록 영상 전체 목록. 삭제 확인 단계 포함.</p>
+      <ul>
+        <li>인터랙션: 삭제 → 해당 행 확인 상태 (4번째 행 예시)</li>
+        <li>확인 → 목록·사용자 화면 양쪽에서 제거</li>
+      </ul>
+    </details>
+  </div>
+
+</div>
+</div>
+
+<script>
+function show(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('#wf-nav button[id^="nav-"]').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('nav-' + id).classList.add('active');
+}
+
+function setViewport(mode) {
+  document.body.classList.remove('viewport-mobile', 'viewport-desktop');
+  document.body.classList.add('viewport-' + mode);
+  document.querySelectorAll('.vp-toggle button').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('vp-' + mode).classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelector('#wf-nav button[id^="nav-"]').click();
+  lucide.createIcons();
+});
+</script>
+</body>
+</html>
