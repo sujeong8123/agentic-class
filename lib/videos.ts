@@ -24,7 +24,7 @@ export function getVideos(): Video[] {
 }
 
 export function getVideosByLevel(level: Video['level']): Video[] {
-  return readVideos().filter(v => v.level === level).slice(0, 10)
+  return readVideos().filter(v => v.level === level).slice(0, 12)
 }
 
 export function getVideoById(id: string): Video | null {

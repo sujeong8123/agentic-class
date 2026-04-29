@@ -1,5 +1,4 @@
 import Link from 'next/link'
-import Image from 'next/image'
 import { Badge } from '@/components/ui/badge'
 import type { Video } from '@/types/video'
 
@@ -12,13 +11,12 @@ export function VideoCard({ video, level }: VideoCardProps) {
   return (
     <Link href={`/${level}/watch/${video.id}`} aria-label={video.title}>
       <div className="group rounded-lg border bg-card overflow-hidden shadow-sm hover:shadow-md transition-shadow cursor-pointer">
-        <div className="relative aspect-video bg-muted">
-          <Image
+        <div className="relative w-full aspect-video bg-muted overflow-hidden">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
             src={`https://img.youtube.com/vi/${video.youtubeId}/mqdefault.jpg`}
             alt={video.title}
-            fill
-            className="object-cover"
-            unoptimized
+            className="h-full w-full object-cover"
           />
           {video.isKidsFriendly && (
             <span className="absolute top-2 left-2">

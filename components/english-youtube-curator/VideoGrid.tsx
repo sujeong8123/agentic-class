@@ -22,7 +22,7 @@ export function VideoGrid({ videos, level }: VideoGridProps) {
       {filtered.length === 0 ? (
         <p className="py-12 text-center text-muted-foreground">영상이 없습니다.</p>
       ) : (
-        <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4">
+        <div className="grid grid-cols-2 gap-4 sm:grid-cols-4">
           {filtered.map((video) => (
             <VideoCard key={video.id} video={video} level={level} />
           ))}

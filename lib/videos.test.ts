@@ -52,7 +52,7 @@ const mockVideos: Video[] = [
   },
 ]
 
-const manyBeginnerVideos: Video[] = Array.from({ length: 12 }, (_, i) => ({
+const manyBeginnerVideos: Video[] = Array.from({ length: 14 }, (_, i) => ({
   id: `bid-${i}`,
   youtubeId: `yt${i}`,
   title: `Beginner ${i}`,
@@ -99,10 +99,10 @@ describe('getVideosByLevel', () => {
     expect(result.length).toBe(2)
   })
 
-  it('caps results at 10 even when more exist', () => {
+  it('caps results at 12 even when more exist', () => {
     setupMock(manyBeginnerVideos)
     const result = getVideosByLevel('beginner')
-    expect(result.length).toBe(10)
+    expect(result.length).toBe(12)
   })
 })
 
