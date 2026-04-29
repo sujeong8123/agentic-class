@@ -2,6 +2,7 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getVideoById } from '@/lib/videos'
 import { YoutubePlayer } from '@/components/english-youtube-curator/YoutubePlayer'
+import { KeySentences } from '@/components/english-youtube-curator/KeySentences'
 
 export default async function WatchPage({
   params,
@@ -28,6 +29,9 @@ export default async function WatchPage({
           <h1 className="text-lg font-semibold">{video.title}</h1>
           <p className="mt-1 text-sm text-muted-foreground">{video.channelName}</p>
         </div>
+        {video.sentences && video.sentences.length > 0 && (
+          <KeySentences sentences={video.sentences} />
+        )}
       </div>
     </main>
   )

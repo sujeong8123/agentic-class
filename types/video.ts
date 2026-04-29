@@ -8,6 +8,7 @@ export interface Video {
   isKidsFriendly: boolean
   arLevel: number
   duration?: string
+  sentences?: string[]
   createdAt: string
 }
 

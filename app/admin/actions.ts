@@ -32,6 +32,12 @@ function parseForm(formData: FormData): { input?: VideoInput; errors?: Record<st
   const duration   = (formData.get('duration') as string) ?? ''
   const channelName = (formData.get('channelName') as string) ?? ''
   const isKidsFriendly = formData.get('isKidsFriendly') === 'on'
+  const sentencesRaw = (formData.get('sentences') as string) ?? ''
+  const sentences = sentencesRaw
+    .split('\n')
+    .map(s => s.trim())
+    .filter(Boolean)
+    .slice(0, 5)
 
   if (!youtubeUrl) errors.youtubeUrl = 'YouTube URL을 입력하세요.'
   if (!title)      errors.title      = '제목을 입력하세요.'
@@ -54,6 +60,7 @@ function parseForm(formData: FormData): { input?: VideoInput; errors?: Record<st
       isKidsFriendly,
       arLevel: parseFloat(arLevel),
       duration: duration.trim() || undefined,
+      sentences: sentences.length > 0 ? sentences : undefined,
     },
   }
 }
