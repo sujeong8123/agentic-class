@@ -1,0 +1,122 @@
+[
+  {
+    "id": "1a2b3c4d-0001-0000-0000-000000000001",
+    "youtubeId": "YcBbBkF6Qbk",
+    "title": "The Very Hungry Caterpillar",
+    "channelName": "StoryTime at Awnie's House",
+    "level": "beginner",
+    "genre": "story",
+    "isKidsFriendly": true,
+    "arLevel": 1.2,
+    "duration": "4:36",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1a2b3c4d-0002-0000-0000-000000000002",
+    "youtubeId": "9kEXhOJLMTY",
+    "title": "Wheels on the Bus",
+    "channelName": "Super Simple Songs",
+    "level": "beginner",
+    "genre": "song",
+    "isKidsFriendly": true,
+    "arLevel": 1.0,
+    "duration": "3:24",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1a2b3c4d-0003-0000-0000-000000000003",
+    "youtubeId": "Wv_CQZZ3mAc",
+    "title": "How Do Volcanoes Work?",
+    "channelName": "National Geographic Kids",
+    "level": "beginner",
+    "genre": "science",
+    "isKidsFriendly": true,
+    "arLevel": 1.8,
+    "duration": "3:12",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1a2b3c4d-0004-0000-0000-000000000004",
+    "youtubeId": "4XWufUZ1mxQ",
+    "title": "The Three Little Pigs",
+    "channelName": "Fairy Tales",
+    "level": "beginner",
+    "genre": "story",
+    "isKidsFriendly": true,
+    "arLevel": 1.5,
+    "duration": "5:10",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1a2b3c4d-0005-0000-0000-000000000005",
+    "youtubeId": "h3qJBRNAKq4",
+    "title": "Space Exploration for Kids",
+    "channelName": "SciShow Kids",
+    "level": "intermediate",
+    "genre": "science",
+    "isKidsFriendly": true,
+    "arLevel": 2.5,
+    "duration": "5:48",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1a2b3c4d-0006-0000-0000-000000000006",
+    "youtubeId": "PmNwFcNMt0M",
+    "title": "Let It Go - Frozen",
+    "channelName": "DisneyMusicVEVO",
+    "level": "intermediate",
+    "genre": "song",
+    "isKidsFriendly": true,
+    "arLevel": 2.8,
+    "duration": "3:43",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1a2b3c4d-0007-0000-0000-000000000007",
+    "youtubeId": "gI0g-HiGMEQ",
+    "title": "Charlotte's Web Read Aloud",
+    "channelName": "Read Along With Me",
+    "level": "intermediate",
+    "genre": "story",
+    "isKidsFriendly": true,
+    "arLevel": 3.0,
+    "duration": "8:22",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1a2b3c4d-0008-0000-0000-000000000008",
+    "youtubeId": "DkLdFHzBhCI",
+    "title": "The Science of Climate Change",
+    "channelName": "TED-Ed",
+    "level": "advanced",
+    "genre": "science",
+    "isKidsFriendly": false,
+    "arLevel": 4.2,
+    "duration": "5:30",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1a2b3c4d-0009-0000-0000-000000000009",
+    "youtubeId": "M7lc1UVf-VE",
+    "title": "English Grammar: Past Tense",
+    "channelName": "English with Lucy",
+    "level": "advanced",
+    "genre": "other",
+    "isKidsFriendly": false,
+    "arLevel": 4.5,
+    "duration": "12:15",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  },
+  {
+    "id": "1a2b3c4d-0010-0000-0000-000000000010",
+    "youtubeId": "OWO7xINGBIs",
+    "title": "A Christmas Carol - Classic Story",
+    "channelName": "Classic Literature",
+    "level": "advanced",
+    "genre": "story",
+    "isKidsFriendly": false,
+    "arLevel": 5.0,
+    "duration": "15:44",
+    "createdAt": "2024-01-01T00:00:00.000Z"
+  }
+]
