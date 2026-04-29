@@ -2,14 +2,15 @@
 
 import type { Video } from '@/types/video'
 
-type Genre = Video['genre'] | 'all'
+type Genre = Video['genre'] | 'all' | 'read-aloud'
 
 const GENRES: { id: Genre; label: string }[] = [
-  { id: 'all', label: '전체' },
-  { id: 'story', label: 'Story' },
-  { id: 'song', label: 'Song' },
-  { id: 'science', label: 'Science' },
-  { id: 'other', label: '기타' },
+  { id: 'all', label: '🌈 All' },
+  { id: 'read-aloud', label: '📖 Read Aloud' },
+  { id: 'story', label: '📚 Story' },
+  { id: 'song', label: '🎵 Song' },
+  { id: 'science', label: '🔬 Science' },
+  { id: 'other', label: '🎨 Others' },
 ]
 
 interface GenreFilterProps {

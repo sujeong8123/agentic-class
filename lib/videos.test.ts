@@ -53,7 +53,7 @@ const mockVideos: Video[] = [
   },
 ]
 
-const manyBeginnerVideos: Video[] = Array.from({ length: 14 }, (_, i) => ({
+const manyBeginnerVideos: Video[] = Array.from({ length: 30 }, (_, i) => ({
   id: `bid-${i}`,
   youtubeId: `yt${i}`,
   title: `Beginner ${i}`,
@@ -100,10 +100,10 @@ describe('getVideosByLevel', () => {
     expect(result.length).toBe(2)
   })
 
-  it('caps results at 12 even when more exist', () => {
+  it('caps results at 20 even when more exist', () => {
     setupMock(manyBeginnerVideos)
     const result = getVideosByLevel('beginner')
-    expect(result.length).toBe(12)
+    expect(result.length).toBe(20)
   })
 })
 
@@ -139,7 +139,7 @@ describe('getReadAloudVideos', () => {
     { id: 'no-ra-1', youtubeId: 'yt6', title: 'Beginner Song No RA', channelName: 'Ch', level: 'beginner', genre: 'song', isKidsFriendly: false, arLevel: 1.0, createdAt: '2024-01-01T00:00:00.000Z' },
   ]
 
-  const manyReadAloudBeginners: Video[] = Array.from({ length: 10 }, (_, i) => ({
+  const manyReadAloudBeginners: Video[] = Array.from({ length: 20 }, (_, i) => ({
     id: `ra-many-${i}`,
     youtubeId: `ytm${i}`,
     title: `Book ${i} Read Aloud`,
@@ -188,10 +188,10 @@ describe('getReadAloudVideos', () => {
     expect(result.map(v => v.arLevel)).toEqual([1.0, 1.2, 1.3])
   })
 
-  it('caps results at 8 when more than 8 Read Aloud videos exist', () => {
+  it('caps results at 12 when more than 12 Read Aloud videos exist', () => {
     setupMock(manyReadAloudBeginners)
     const result = getReadAloudVideos('beginner')
-    expect(result).toHaveLength(8)
+    expect(result).toHaveLength(12)
   })
 
   it('does not include Read Aloud videos from other levels', () => {

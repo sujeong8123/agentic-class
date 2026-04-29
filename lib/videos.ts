@@ -24,14 +24,14 @@ export function getVideos(): Video[] {
 }
 
 export function getVideosByLevel(level: Video['level']): Video[] {
-  return readVideos().filter(v => v.level === level).slice(0, 12)
+  return readVideos().filter(v => v.level === level).slice(0, 20)
 }
 
 export function getReadAloudVideos(level: Video['level']): Video[] {
   return readVideos()
     .filter(v => v.level === level && v.title.toLowerCase().includes('read aloud'))
     .sort((a, b) => (a.arLevel ?? Infinity) - (b.arLevel ?? Infinity))
-    .slice(0, 8)
+    .slice(0, 12)
 }
 
 export function getVideoById(id: string): Video | null {

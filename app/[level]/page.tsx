@@ -2,7 +2,6 @@ import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { getVideosByLevel, getReadAloudVideos } from '@/lib/videos'
 import { VideoGrid } from '@/components/english-youtube-curator/VideoGrid'
-import { ReadAloudSection } from '@/components/english-youtube-curator/ReadAloudSection'
 import type { Video } from '@/types/video'
 
 const VALID_LEVELS: Video['level'][] = ['beginner', 'intermediate', 'advanced']
@@ -42,10 +41,8 @@ export default async function LevelPage({
         </Link>
         <YoungYouTubeLogo youColorClass={config.youColor} />
       </header>
-      <div className="mx-auto max-w-5xl px-4 py-6 space-y-10">
-        <VideoGrid videos={videos} level={level} />
-
-        <ReadAloudSection videos={readAloudVideos} level={level} />
+      <div className="mx-auto max-w-5xl px-4 py-6">
+        <VideoGrid videos={videos} readAloudVideos={readAloudVideos} level={level} />
       </div>
     </main>
   )
