@@ -17,12 +17,11 @@ export function AdminButton() {
 
   return (
     <div className="fixed bottom-5 right-5 flex flex-col items-center gap-1">
-      <span className="text-xs text-muted-foreground font-medium">엄마만</span>
       <button
         onClick={() => setOpen(true)}
         className="rounded-full bg-primary/10 border border-primary/20 px-4 py-2 text-xs text-primary shadow hover:bg-primary/20 transition-colors"
       >
-        🔑 관리자
+        🔑 엄마만
       </button>
 
       <Dialog open={open} onOpenChange={setOpen}>

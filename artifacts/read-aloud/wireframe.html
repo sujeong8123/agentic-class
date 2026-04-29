@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Wireframe: Read Aloud</title>
+<script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+<script src="https://unpkg.com/lucide@latest"></script>
+<style>
+  :root {
+    --w-bg: #f5f5f5;
+    --w-border: #ccc;
+    --w-text: #555;
+    --w-muted: #aaa;
+    --w-fill: #eee;
+  }
+
+  * {
+    font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+    color: var(--w-text);
+  }
+
+  body { background: var(--w-bg); }
+
+  nav { position: sticky; top: 0; z-index: 40; background: var(--w-bg); border-bottom: 1px solid var(--w-border); }
+  nav button { cursor: pointer; font-size: 13px; }
+  nav button:hover { background: var(--w-fill); border-radius: 4px; }
+  nav button.active { font-weight: bold; border-bottom: 2px solid var(--w-text); }
+
+  .screen { display: none; }
+  .screen.active { display: block; }
+
+  .vp-toggle button {
+    font-size: 12px; padding: 2px 8px;
+    border: 1px solid var(--w-border); cursor: pointer; background: white;
+  }
+  .vp-toggle button:first-child { border-radius: 4px 0 0 4px; }
+  .vp-toggle button:last-child { border-radius: 0 4px 4px 0; border-left: none; }
+  .vp-toggle button.active { background: var(--w-text); color: white; }
+
+  body.viewport-mobile .screen-content {
+    max-width: 375px !important;
+    margin: 24px auto !important;
+    border: 2px solid var(--w-border);
+    border-radius: 24px;
+    min-height: 667px;
+    background: white;
+    box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+    padding: 0 !important;
+    overflow: hidden;
+  }
+
+  .screen-notes {
+    background: #fffde7;
+    border-left: 3px solid #ffd54f;
+    padding: 12px 16px;
+    margin-top: 24px;
+    font-size: 13px;
+    border-radius: 0 4px 4px 0;
+  }
+  .screen-notes summary {
+    cursor: pointer;
+    font-weight: bold;
+    font-size: 12px;
+    color: #b0a050;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .screen-notes p { margin: 6px 0 2px; color: #777; }
+  .screen-notes ul { margin: 4px 0 0 16px; padding: 0; color: #777; }
+  .screen-notes li { margin: 2px 0; }
+
+  /* Video card thumbnail placeholder */
+  .w-thumb {
+    width: 100%;
+    aspect-ratio: 16/9;
+    background: var(--w-fill);
+    border-bottom: 1px solid var(--w-border);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+  }
+  .w-card {
+    border: 1px solid var(--w-border);
+    border-radius: 8px;
+    overflow: hidden;
+    background: white;
+    cursor: pointer;
+  }
+  .w-card:hover { box-shadow: 0 2px 8px rgba(0,0,0,0.1); }
+  .w-badge {
+    display: inline-block;
+    border-radius: 9999px;
+    border: 1px solid var(--w-border);
+    padding: 1px 8px;
+    font-size: 11px;
+    background: var(--w-fill);
+  }
+  .w-tag {
+    display: inline-block;
+    border-radius: 9999px;
+    background: var(--w-fill);
+    border: 1px solid var(--w-border);
+    padding: 2px 10px;
+    font-size: 12px;
+    cursor: pointer;
+  }
+  .w-tag.active {
+    background: var(--w-text);
+    color: white;
+    border-color: var(--w-text);
+  }
+  .w-section-divider {
+    border-top: 1px solid var(--w-border);
+    margin-top: 24px;
+    padding-top: 20px;
+  }
+  .w-ar-badge {
+    display: inline-block;
+    border-radius: 9999px;
+    background: var(--w-fill);
+    border: 1px dashed var(--w-border);
+    padding: 1px 8px;
+    font-size: 11px;
+    margin-top: 4px;
+  }
+</style>
+</head>
+<body class="p-0 m-0 viewport-mobile">
+
+<nav class="flex items-center gap-4 px-6 py-2">
+  <span class="text-xs" style="color:var(--w-muted)">wireframe</span>
+  <button id="nav-0" onclick="show(0)" class="px-2 py-1">레벨 페이지 (S-1)</button>
+  <button id="nav-1" onclick="show(1)" class="px-2 py-1">카드 클릭 (S-2)</button>
+  <div class="vp-toggle flex ml-auto">
+    <button id="vp-desktop" onclick="setViewport('desktop')">Desktop</button>
+    <button id="vp-mobile" onclick="setViewport('mobile')" class="active">Mobile</button>
+  </div>
+</nav>
+
+<!-- S-1: 레벨 페이지 — Read Aloud 섹션 표시 -->
+<div id="screen-0" class="screen" data-scenario="S-1">
+  <div class="screen-content @container max-w-6xl mx-auto">
+
+    <!-- 헤더 -->
+    <div style="border-bottom:1px solid var(--w-border); padding: 10px 16px; display:flex; align-items:center; gap:12px; background:white;">
+      <span style="font-size:12px; color:var(--w-muted)">← 홈</span>
+      <span style="font-size:14px; font-weight:bold;">
+        <span style="color:var(--w-muted)">You</span>ng<span style="color:var(--w-muted)">You</span>Tube
+      </span>
+      <span style="font-size:11px; margin-left:4px; color:var(--w-muted)">Beginner</span>
+    </div>
+
+    <div class="p-4 space-y-6">
+
+      <!-- 기존 VideoGrid 섹션 -->
+      <div>
+        <div class="flex gap-2 flex-wrap mb-4">
+          <span class="w-tag active">전체</span>
+          <span class="w-tag">Story</span>
+          <span class="w-tag">Song</span>
+          <span class="w-tag">Science</span>
+          <span class="w-tag">기타</span>
+        </div>
+        <div class="grid grid-cols-2 gap-3 @md:grid-cols-4">
+          <!-- 기존 영상 카드 4개 (대표) -->
+          <div class="w-card">
+            <div class="w-thumb"><i data-lucide="play" style="color:var(--w-muted); width:20px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Five Little Ducks</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">Super Simple Songs</p>
+              <span class="w-ar-badge">AR 1.0</span>
+            </div>
+          </div>
+          <div class="w-card">
+            <div class="w-thumb"><i data-lucide="play" style="color:var(--w-muted); width:20px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Twinkle Twinkle Little Star</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">Super Simple Songs</p>
+              <span class="w-ar-badge">AR 1.0</span>
+            </div>
+          </div>
+          <div class="w-card">
+            <div class="w-thumb"><i data-lucide="play" style="color:var(--w-muted); width:20px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Three Little Kittens</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">Bounce Patrol</p>
+              <span class="w-ar-badge">AR 1.2</span>
+            </div>
+          </div>
+          <div class="w-card">
+            <div class="w-thumb"><i data-lucide="play" style="color:var(--w-muted); width:20px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Cool Science Experiments</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">SciShow Kids</p>
+              <span class="w-ar-badge">AR 1.8</span>
+            </div>
+          </div>
+          <!-- 나머지 4개는 흐리게 표시 -->
+          <div class="w-card" style="opacity:0.4;">
+            <div class="w-thumb"></div>
+            <div class="p-2"><p style="font-size:11px;">…</p></div>
+          </div>
+          <div class="w-card" style="opacity:0.4;">
+            <div class="w-thumb"></div>
+            <div class="p-2"><p style="font-size:11px;">…</p></div>
+          </div>
+          <div class="w-card" style="opacity:0.4;">
+            <div class="w-thumb"></div>
+            <div class="p-2"><p style="font-size:11px;">…</p></div>
+          </div>
+          <div class="w-card" style="opacity:0.4;">
+            <div class="w-thumb"></div>
+            <div class="p-2"><p style="font-size:11px;">…</p></div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Read Aloud 섹션 (새로 추가) -->
+      <div class="w-section-divider">
+        <div class="mb-4">
+          <h2 style="font-size:14px; font-weight:600;">📖 Read Aloud</h2>
+          <p style="font-size:11px; color:var(--w-muted); margin-top:2px;">AR지수 순 · 최대 8편</p>
+        </div>
+
+        <div class="grid grid-cols-2 gap-3 @md:grid-cols-4">
+          <!-- Read Aloud 카드 8개, AR 오름차순 -->
+          <div class="w-card" style="outline: 2px dashed var(--w-border);">
+            <div class="w-thumb"><i data-lucide="book-open" style="color:var(--w-muted); width:18px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Brown Bear Brown Bear What Do You See Read Aloud</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">StoryTime</p>
+              <span class="w-ar-badge">AR 1.0</span>
+            </div>
+          </div>
+          <div class="w-card" style="outline: 2px dashed var(--w-border);">
+            <div class="w-thumb"><i data-lucide="book-open" style="color:var(--w-muted); width:18px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">The Very Hungry Caterpillar Read Aloud</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">StoryTime</p>
+              <span class="w-ar-badge">AR 1.2</span>
+            </div>
+          </div>
+          <div class="w-card" style="outline: 2px dashed var(--w-border);">
+            <div class="w-thumb"><i data-lucide="book-open" style="color:var(--w-muted); width:18px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Bats! Read Aloud</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">National Geographic</p>
+              <span class="w-ar-badge">AR 1.5</span>
+            </div>
+          </div>
+          <div class="w-card" style="outline: 2px dashed var(--w-border);">
+            <div class="w-thumb"><i data-lucide="book-open" style="color:var(--w-muted); width:18px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Buzz, Bee! Read Aloud</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">National Geographic</p>
+              <span class="w-ar-badge">AR 1.5</span>
+            </div>
+          </div>
+          <div class="w-card" style="outline: 2px dashed var(--w-border);">
+            <div class="w-thumb"><i data-lucide="book-open" style="color:var(--w-muted); width:18px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Where is the Green Sheep Read Aloud</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">Kids BookShelf</p>
+              <span class="w-ar-badge">AR 1.6</span>
+            </div>
+          </div>
+          <div class="w-card" style="outline: 2px dashed var(--w-border);">
+            <div class="w-thumb"><i data-lucide="book-open" style="color:var(--w-muted); width:18px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Elephant and Piggie Read Aloud</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">StoryTime</p>
+              <span class="w-ar-badge">AR 1.7</span>
+            </div>
+          </div>
+          <div class="w-card" style="outline: 2px dashed var(--w-border);">
+            <div class="w-thumb"><i data-lucide="book-open" style="color:var(--w-muted); width:18px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Diary of a Worm Read Aloud</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">Read Aloud Revival</p>
+              <span class="w-ar-badge">AR 1.8</span>
+            </div>
+          </div>
+          <div class="w-card" style="outline: 2px dashed var(--w-border);">
+            <div class="w-thumb"><i data-lucide="book-open" style="color:var(--w-muted); width:18px;"></i></div>
+            <div class="p-2">
+              <p style="font-size:11px; font-weight:500; line-height:1.3;" class="line-clamp-2">Click Clack Moo Read Aloud</p>
+              <p style="font-size:10px; color:var(--w-muted); margin-top:2px;">Read Aloud Revival</p>
+              <span class="w-ar-badge">AR 1.9</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="screen-notes mx-4 mb-6">
+      <details open>
+        <summary>Notes</summary>
+        <p>레벨 페이지 — Read Aloud 섹션 추가</p>
+        <ul>
+          <li>트리거: 사용자가 /beginner (또는 /intermediate, /advanced) 진입</li>
+          <li>기존 VideoGrid(장르 필터 + 8개) 아래에 구분선과 함께 Read Aloud 섹션 표시</li>
+          <li>Read Aloud 카드: 점선 테두리로 기존 카드와 구분 (와이어프레임 표시용)</li>
+          <li>카드 순서: AR지수 오름차순, 최대 8개</li>
+          <li>인터랙션: 카드 클릭 → S-2 (watch 페이지 이동)</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</div>
+
+<!-- S-2: 카드 클릭 → watch 페이지 -->
+<div id="screen-1" class="screen" data-scenario="S-2">
+  <div class="screen-content @container max-w-6xl mx-auto">
+
+    <!-- 헤더 -->
+    <div style="border-bottom:1px solid var(--w-border); padding: 10px 16px; display:flex; align-items:center; gap:12px; background:white;">
+      <span style="font-size:12px; color:var(--w-muted)">← Beginner</span>
+      <span style="font-size:14px; font-weight:bold;">
+        <span style="color:var(--w-muted)">You</span>ng<span style="color:var(--w-muted)">You</span>Tube
+      </span>
+    </div>
+
+    <div class="p-4 space-y-4">
+
+      <!-- YouTube 플레이어 영역 -->
+      <div style="width:100%; aspect-ratio:16/9; background:var(--w-fill); border:1px solid var(--w-border); border-radius:8px; display:flex; align-items:center; justify-content:center; flex-direction:column; gap:8px;">
+        <i data-lucide="youtube" style="color:var(--w-muted); width:32px; height:32px;"></i>
+        <span style="font-size:11px; color:var(--w-muted);">YouTube 임베드 플레이어</span>
+      </div>
+
+      <!-- 영상 정보 -->
+      <div style="background:white; border:1px solid var(--w-border); border-radius:8px; padding:12px;">
+        <p style="font-size:13px; font-weight:600; line-height:1.4;">Brown Bear Brown Bear What Do You See Read Aloud</p>
+        <p style="font-size:11px; color:var(--w-muted); margin-top:4px;">StoryTime at Awnie's House</p>
+        <div class="flex items-center gap-2 mt-2">
+          <span class="w-ar-badge">AR 1.0</span>
+          <span class="w-badge">Beginner</span>
+        </div>
+      </div>
+
+    </div>
+
+    <div class="screen-notes mx-4 mb-6">
+      <details open>
+        <summary>Notes</summary>
+        <p>Watch 페이지 (기존 기능 — 참고용)</p>
+        <ul>
+          <li>트리거: Read Aloud 섹션 카드 클릭 → /beginner/watch/[videoId]</li>
+          <li>기존 watch 페이지와 동일한 화면 — Read Aloud 전용 처리 없음</li>
+          <li>전환: 헤더 "← Beginner" 클릭 → 레벨 페이지 복귀</li>
+        </ul>
+      </details>
+    </div>
+  </div>
+</div>
+
+<script>
+var currentScreen = 0;
+var screenIds = [];
+
+function show(id) {
+  document.querySelectorAll('.screen').forEach(function(s) { s.classList.remove('active'); });
+  document.getElementById('screen-' + id).classList.add('active');
+  document.querySelectorAll('nav button[id^="nav-"]').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('nav-' + id).classList.add('active');
+  currentScreen = screenIds.indexOf(id);
+}
+
+function setViewport(mode) {
+  document.body.classList.remove('viewport-mobile', 'viewport-desktop');
+  document.body.classList.add('viewport-' + mode);
+  document.querySelectorAll('.vp-toggle button').forEach(function(b) { b.classList.remove('active'); });
+  document.getElementById('vp-' + mode).classList.add('active');
+}
+
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('nav button[id^="nav-"]').forEach(function(b) {
+    screenIds.push(parseInt(b.id.replace('nav-', '')));
+  });
+  var first = document.querySelector('nav button[id^="nav-"]');
+  if (first) first.click();
+  lucide.createIcons();
+});
+</script>
+</body>
+</html>
