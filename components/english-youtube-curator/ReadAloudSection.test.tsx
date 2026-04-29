@@ -54,6 +54,11 @@ describe('ReadAloudSection', () => {
     expect(link).toHaveAttribute('href', '/beginner/watch/vid-abc')
   })
 
+  it('renders empty state when no videos are provided', () => {
+    render(<ReadAloudSection videos={[]} level="beginner" />)
+    expect(screen.getByText('준비 중이에요.')).toBeInTheDocument()
+  })
+
   it('renders correctly for intermediate level', () => {
     const video = makeVideo({ id: 'vid-xyz', level: 'intermediate' })
     render(<ReadAloudSection videos={[video]} level="intermediate" />)

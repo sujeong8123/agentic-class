@@ -30,7 +30,7 @@ export function getVideosByLevel(level: Video['level']): Video[] {
 export function getReadAloudVideos(level: Video['level']): Video[] {
   return readVideos()
     .filter(v => v.level === level && v.title.toLowerCase().includes('read aloud'))
-    .sort((a, b) => a.arLevel - b.arLevel)
+    .sort((a, b) => (a.arLevel ?? Infinity) - (b.arLevel ?? Infinity))
     .slice(0, 8)
 }
 
