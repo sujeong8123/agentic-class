@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Card, CardHeader, CardTitle, CardDescription } from '@/components/ui/card'
+import { AdminButton } from '@/components/english-youtube-curator/AdminButton'
 
 const LEVELS = [
   {
@@ -63,13 +64,7 @@ export default function HomePage() {
         </div>
       </div>
 
-      {/* 관리자 전용 버튼 — 화면 하단 우측 */}
-      <Link
-        href="/admin/login"
-        className="fixed bottom-5 right-5 rounded-full bg-muted px-4 py-2 text-xs text-muted-foreground shadow hover:bg-muted/70 transition-colors"
-      >
-        🔑 엄마만
-      </Link>
+      <AdminButton />
     </main>
   )
 }

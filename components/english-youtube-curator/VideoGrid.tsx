@@ -13,8 +13,9 @@ interface VideoGridProps {
 export function VideoGrid({ videos, level }: VideoGridProps) {
   const [activeGenre, setActiveGenre] = useState<Genre>('all')
 
-  const filtered =
+  const filtered = (
     activeGenre === 'all' ? videos : videos.filter((v) => v.genre === activeGenre)
+  ).slice(0, 8)
 
   return (
     <div className="space-y-4">
